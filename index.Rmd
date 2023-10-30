@@ -1,0 +1,12 @@
+---
+title: "Dylan Koproski's Website"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    theme: cosmo
+---
+
+# Info
+
+Hi I am Dylan Koproski and this is my website which will contain up to data information on my projects and work experience.
