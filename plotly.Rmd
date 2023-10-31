@@ -20,6 +20,54 @@ Column {data-width=450}
 
 ```{r}
 data("instacart")
+
+df_plot_c = 
+  instacart |> 
+  filter(department != "missing",
+         department != "other") |> 
+  group_by(department) |> 
+  summarize(total_orders = n()) |> 
+  arrange(total_orders)
+
+df_plot_c |> 
+  mutate(text_label = str_c("Department:", department, "<br> Total Orders:", total_orders)) |> 
+  plot_ly(x = ~department, y = ~total_orders,
+          type = "scatter",
+          mode = "markers",
+          text = ~text_label,
+          color = ~department) |> 
+  layout(title = "Total Orders by Department",
+         yaxis = list(title = "Number of Orders"),
+         xaxis = list(title = "Department", tickangle = -45)) 
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Chart B
+
+```{r}
+df_plot_b = 
+  instacart |> 
+  filter(department != "missing",
+         department != "other") |> 
+  group_by(order_hour_of_day, department) |> 
+  summarize(count = n()) 
+
+df_plot_b |> 
+  mutate(text_label = str_c("Hour:", order_hour_of_day, "Count:", count)) |> 
+  plot_ly(x = ~department, y = ~count,
+          type = "box",
+          color = ~department,
+          text = ~text_label) |> 
+          layout(title = "Distribution of # of Orders by Hour per Department",
+          yaxis = list(title = "# of Orders"),
+          xaxis = list(title = "Department"))
+```
+
+### Chart C
+
+```{r}
 df_plot_a =
    instacart |> 
    filter(aisle_id == 1) |> 
@@ -37,35 +85,6 @@ df_plot_a |>
         alpha = 0.5) |> 
  layout(title = "Frequency of Products in Aisle 1 by Hour of the Day",
         legend = list(font = list(size = 8)))
-
-```
-
-Column {data-width=350}
------------------------------------------------------------------------
-
-### Chart B
-
-```{r}
-df_plot_b = 
-   instacart |> 
-   group_by(order_hour_of_day, department) |> 
-   summarize(count = n()) 
-
-df_plot_b |> 
-  mutate(text_label = str_c("Hour:", order_hour_of_day, "Count:", count)) |> 
-  plot_ly(x = ~department, y = ~count,
-          type = "box",
-          color = ~department,
-          text = ~text_label) |> 
-          layout(title = "Distribution of # of Orders by Hour per Department",
-          yaxis = list(title = "# of Orders"),
-          xaxis = list(title = "Department"))
-```
-
-### Chart C
-
-```{r}
-
 ```
 
 
