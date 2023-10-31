@@ -1,0 +1,83 @@
+---
+title: "Other plots"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+    theme: cosmo
+    source: embed
+    navbar:
+      - { title: "Home", href: "https://dkoproski.github.io/index.html", align: left }      
+      - { title: "About", href: "https://dkoproski.github.io/about.html", align: left }
+      - { icon: "ion-social-github", href: "https://github.com/dkoproski/", align: right }
+      - { icon: "ion-android-mail", href: "dfk2117@cumc.columbia.edu", align: right }
+      
+---
+
+```{r, include= FALSE}
+library(flexdashboard)
+library(tidyverse)
+library(plotly)
+library(p8105.datasets)
+library(leaflet)
+library(ggridges)
+library(ggmap)
+library(RColorBrewer)
+library(htmlwidgets)
+```
+
+Column {data-width=450}
+-----------------------------------------------------------------------
+
+### Catches by location
+
+```{r}
+df = read.csv("data_p/testdata.csv")
+
+df_clean <- df |> 
+  separate(Lat, into = c("lat", "lng"), sep = ",", convert = TRUE) |> 
+  drop_na(lat)
+
+location_data <- df_clean |> 
+  group_by(lat, lng) |> 
+  summarize(
+    count = n(),
+    location = first(location)
+  )
+
+location_data$location = as.factor(location_data$location)
+
+color_palette = rainbow(length(unique(location_data$location)))
+
+color_mapping = color_palette[as.integer(location_data$location)]
+
+location_data |> 
+  leaflet() |> 
+  addTiles() |> 
+  addCircleMarkers(
+    lng = ~lng, 
+    lat = ~lat, 
+    color = ~color_mapping,
+    radius = ~pmin(sqrt(count) * 1.5, 20), 
+    popup = ~paste0("Location: ", location, "<br>Number of Catches: ", count),
+    fillOpacity = 0.6, 
+    stroke = FALSE
+  )
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Catches over time
+
+```{r}
+
+```
+
+### Chart C
+
+```{r}
+
+```
+
+

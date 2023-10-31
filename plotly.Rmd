@@ -1,9 +1,17 @@
 ---
-title: "Dylan Koproski's Website"
+title: "Instacart Plots"
 output: 
   flexdashboard::flex_dashboard:
     orientation: columns
     vertical_layout: fill
+    theme: cosmo
+    source: embed
+    navbar:
+      - { title: "Home", href: "https://dkoproski.github.io/index.html", align: left }      
+      - { title: "About", href: "https://dkoproski.github.io/about.html", align: left }
+      - { icon: "ion-social-github", href: "https://github.com/dkoproski/", align: right }
+      - { icon: "ion-android-mail", href: "dfk2117@cumc.columbia.edu", align: right }
+      
 ---
 
 ```{r, include= FALSE}
