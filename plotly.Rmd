@@ -1,17 +1,71 @@
 ---
 title: "Plots"
 output: 
-  html_document:
-    toc: true
-    toc_float: true
-    theme: cosmo
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
 ---
 
-#Plots 
-
-```{r, message = FALSE}
+```{r, include= FALSE}
+library(flexdashboard)
 library(tidyverse)
 library(plotly)
-
 library(p8105.datasets)
 ```
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Chart A
+
+```{r}
+data("instacart")
+df_plot_a =
+   instacart |> 
+   filter(aisle_id == 1) |> 
+   group_by(order_hour_of_day, product_name) |> 
+   summarize(count = n()) |> 
+   arrange(-count)
+
+df_plot_a |> 
+  mutate(text_label = str_c("Product:", product_name, "<br> Count:", count)) |> 
+  plot_ly(x = ~order_hour_of_day, y = ~count, 
+        type = "scatter", 
+        mode = "markers",
+        color = ~product_name, 
+        text = ~text_label,
+        alpha = 0.5) |> 
+ layout(title = "Frequency of Products in Aisle 1 by Hour of the Day",
+        legend = list(font = list(size = 8)))
+
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Chart B
+
+```{r}
+df_plot_b = 
+   instacart |> 
+   group_by(order_hour_of_day, department) |> 
+   summarize(count = n()) 
+
+df_plot_b |> 
+  mutate(text_label = str_c("Hour:", order_hour_of_day, "Count:", count)) |> 
+  plot_ly(x = ~department, y = ~count,
+          type = "box",
+          color = ~department,
+          text = ~text_label) |> 
+          layout(title = "Distribution of # of Orders by Hour per Department",
+          yaxis = list(title = "# of Orders"),
+          xaxis = list(title = "Department"))
+```
+
+### Chart C
+
+```{r}
+
+```
+
+
