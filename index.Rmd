@@ -9,4 +9,6 @@ output:
 
 # Info
 
+![](images/photo.jpg){width=5000px}
+
 Hi I am Dylan Koproski and I am a masters student at Columbia University. This is my website which will contain up to data information on my projects and work experience. The about page contains my experience and qualifications and the "instacart plots" page contains the plots for this assignment.
